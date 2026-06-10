@@ -210,11 +210,12 @@ const walletExamples = {
   react: {
     title: 'React 调用',
     text: '按下面三步接入，业务页面就能直接弹出 MTPAY 钱包选择框。',
+    fileName: 'CheckoutWallet.tsx',
     steps: [
-      { title: '安装', code: 'npm install mtpay-wallet-kit' },
-      { title: '导入组件和样式', code: `import { WalletManager, WalletModal, WalletButton } from 'mtpay-wallet-kit';
+      { title: 'install', code: 'npm install mtpay-wallet-kit' },
+      { title: 'import', code: `import { WalletManager, WalletModal, WalletButton } from 'mtpay-wallet-kit';
 import 'mtpay-wallet-kit/style.css';` },
-      { title: '渲染连接按钮和弹框', code: 'WalletButton 负责打开弹框，WalletModal 连接成功后返回 wallet。' }
+      { title: 'connect', code: '<WalletButton wallet={wallet} onClick={() => setOpen(true)} />' }
     ],
     code: `import { useMemo, useState } from 'react';
 import { WalletManager, WalletModal, WalletButton } from 'mtpay-wallet-kit';
@@ -242,10 +243,11 @@ export function CheckoutWallet() {
   vue: {
     title: 'Vue3 调用',
     text: 'Vue3 项目使用 SDK API 连接钱包，可自行渲染钱包列表或封装成业务弹框。',
+    fileName: 'CheckoutWallet.vue',
     steps: [
-      { title: '安装', code: 'npm install mtpay-wallet-kit' },
-      { title: '导入 SDK API', code: `import { WalletManager, detectWallets } from 'mtpay-wallet-kit';` },
-      { title: '发现钱包并连接', code: 'detectWallets() 返回可用钱包列表，manager.connect(wallet) 返回连接结果。' }
+      { title: 'install', code: 'npm install mtpay-wallet-kit' },
+      { title: 'import', code: `import { WalletManager, detectWallets } from 'mtpay-wallet-kit';` },
+      { title: 'connect', code: 'wallet.value = await manager.connect(selectedWallet);' }
     ],
     code: `<script setup lang="ts">
 import { ref } from 'vue';
@@ -295,39 +297,58 @@ function WalletPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect
 
         <div className="guide-stack wallet-call-guide">
           <article className="wallet-example-card">
-            <div className="wallet-example-tabs" role="tablist" aria-label="Wallet kit framework examples">
-              <button
-                className={activeExample === 'react' ? 'active' : ''}
-                type="button"
-                role="tab"
-                aria-selected={activeExample === 'react'}
-                onClick={() => setActiveExample('react')}
-              >
-                <CodeOutlined />
-                React
-              </button>
-              <button
-                className={activeExample === 'vue' ? 'active' : ''}
-                type="button"
-                role="tab"
-                aria-selected={activeExample === 'vue'}
-                onClick={() => setActiveExample('vue')}
-              >
-                <ThunderboltOutlined />
-                Vue3
-              </button>
+            <div className="code-workbench">
+              <div className="wallet-example-tabs" role="tablist" aria-label="Wallet kit framework examples">
+                <button
+                  className={activeExample === 'react' ? 'active' : ''}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeExample === 'react'}
+                  onClick={() => setActiveExample('react')}
+                >
+                  <CodeOutlined />
+                  React
+                </button>
+                <button
+                  className={activeExample === 'vue' ? 'active' : ''}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeExample === 'vue'}
+                  onClick={() => setActiveExample('vue')}
+                >
+                  <ThunderboltOutlined />
+                  Vue3
+                </button>
+              </div>
+
+              <div className="code-window">
+                <div className="code-window-bar">
+                  <span className="window-dots" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                  <strong>{currentExample.fileName}</strong>
+                  <em>{currentExample.title}</em>
+                </div>
+
+                <p>{currentExample.text}</p>
+
+                <div className="snippet-grid">
+                  {currentExample.steps.map((step, index) => (
+                    <section className="snippet-card" key={step.title}>
+                      <header>
+                        <span>{String(index + 1).padStart(2, '0')}</span>
+                        <strong>{step.title}</strong>
+                      </header>
+                      <pre className={index === 0 ? 'terminal-snippet' : ''}>{index === 0 ? `$ ${step.code}` : step.code}</pre>
+                    </section>
+                  ))}
+                </div>
+
+                <pre className="main-code-block">{currentExample.code}</pre>
+              </div>
             </div>
-            <h2>{currentExample.title}</h2>
-            <p>{currentExample.text}</p>
-            <ol className="wallet-example-steps">
-              {currentExample.steps.map((step) => (
-                <li key={step.title}>
-                  <span>{step.title}</span>
-                  <code>{step.code}</code>
-                </li>
-              ))}
-            </ol>
-            <pre>{currentExample.code}</pre>
           </article>
           <article>
             <h2>连接成功后如何使用</h2>

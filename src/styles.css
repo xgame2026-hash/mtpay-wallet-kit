@@ -520,17 +520,23 @@ button {
 }
 
 .wallet-example-card {
-  display: grid;
-  gap: 12px;
+  padding: 0;
+  overflow: hidden;
+  background: rgba(5, 8, 15, 0.68);
+}
+
+.code-workbench {
+  min-width: 0;
 }
 
 .wallet-example-tabs {
-  display: inline-flex;
-  width: fit-content;
-  padding: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  width: 100%;
+  padding: 0 14px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  background: #0a0f18;
 }
 
 .wallet-example-tabs button {
@@ -538,70 +544,148 @@ button {
   align-items: center;
   justify-content: center;
   gap: 7px;
-  min-width: 68px;
-  min-height: 32px;
-  padding: 0 13px;
+  min-width: 92px;
+  min-height: 42px;
+  padding: 0 15px;
   border: 0;
-  border-radius: 6px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0;
   background: transparent;
-  color: #9da7b8;
-  font-size: 13px;
-  font-weight: 620;
+  color: #8f99aa;
+  font-size: 12px;
+  font-weight: 680;
 }
 
 .wallet-example-tabs button.active {
-  background: rgba(99, 230, 190, 0.16);
+  background: rgba(99, 230, 190, 0.08);
   color: #7bf0cd;
+  box-shadow: inset 0 -2px 0 #63e6be;
+}
+
+.code-window {
+  min-width: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    #080c14;
+  background-size: 100% 30px;
+}
+
+.code-window-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(15, 21, 32, 0.82);
+}
+
+.window-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.window-dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #425066;
+}
+
+.window-dots i:nth-child(1) {
+  background: #ff6b6b;
+}
+
+.window-dots i:nth-child(2) {
+  background: #ffd166;
+}
+
+.window-dots i:nth-child(3) {
+  background: #63e6be;
+}
+
+.code-window-bar strong {
+  color: #eef2f7;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 12px;
+  font-weight: 680;
+}
+
+.code-window-bar em {
+  margin-left: auto;
+  color: #7d8797;
+  font-size: 11px;
+  font-style: normal;
+}
+
+.code-window p {
+  margin: 0;
+  padding: 16px 18px 0;
+  color: #aeb7c6;
+  font-size: 13px;
+  line-height: 1.65;
 }
 
 .wallet-example-steps {
-  display: grid;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: wallet-step;
+  display: none;
 }
 
-.wallet-example-steps li {
+.snippet-grid {
   display: grid;
-  grid-template-columns: 22px minmax(88px, auto) minmax(0, 1fr);
   gap: 10px;
-  align-items: center;
+  padding: 16px 18px 0;
+}
+
+.snippet-card {
   min-width: 0;
-}
-
-.wallet-example-steps li::before {
-  counter-increment: wallet-step;
-  content: counter(wallet-step);
-  display: inline-grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(99, 230, 190, 0.14);
-  color: #7bf0cd;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.wallet-example-steps span {
-  color: #eef2f7;
-  font-size: 13px;
-  font-weight: 620;
-}
-
-.wallet-example-steps code {
-  min-width: 0;
-  padding: 7px 9px;
-  overflow-x: auto;
+  overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 7px;
-  background: #090d15;
+  border-radius: 8px;
+  background: rgba(5, 8, 15, 0.72);
+}
+
+.snippet-card header {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 30px;
+  padding: 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.snippet-card header span {
+  color: #63e6be;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 11px;
+  font-weight: 760;
+}
+
+.snippet-card header strong {
+  color: #dce2ec;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  font-size: 11px;
+  font-weight: 680;
+  text-transform: uppercase;
+}
+
+.snippet-card pre {
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  padding: 11px 12px;
+  overflow-x: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: #dce2ec;
   font-size: 11px;
-  line-height: 1.45;
+  line-height: 1.55;
   white-space: pre;
+}
+
+.snippet-card .terminal-snippet {
+  color: #9ef4d8;
 }
 
 .wallet-call-guide h2 {
@@ -618,6 +702,15 @@ button {
   padding: 12px;
   font-size: 11px;
   line-height: 1.5;
+}
+
+.wallet-call-guide .main-code-block {
+  margin: 16px 18px 18px;
+  padding: 16px 18px;
+  border-color: rgba(99, 230, 190, 0.12);
+  background: rgba(3, 6, 12, 0.82);
+  font-size: 12px;
+  line-height: 1.58;
 }
 
 .wallet-preview-pane {
