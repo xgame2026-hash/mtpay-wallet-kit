@@ -103,6 +103,7 @@ button {
 .topnav button {
   display: inline-flex;
   align-items: center;
+  gap: 7px;
   min-height: 36px;
   padding: 0 12px;
   border: 0;
@@ -113,6 +114,13 @@ button {
   font-weight: 620;
   text-decoration: none;
   white-space: nowrap;
+}
+
+.nav-icon {
+  display: inline-grid;
+  place-items: center;
+  color: #7ee8c8;
+  font-size: 14px;
 }
 
 .topnav button:hover,
@@ -207,6 +215,33 @@ button {
   margin-top: 26px;
 }
 
+.hero-signal-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.hero-signal-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(126, 232, 200, 0.2);
+  border-radius: 999px;
+  background: rgba(6, 14, 22, 0.54);
+  color: #cdd7e5;
+  font-size: 12px;
+  font-weight: 650;
+  backdrop-filter: blur(10px);
+}
+
+.hero-signal-row .anticon {
+  color: #7ee8c8;
+  font-size: 13px;
+}
+
 .primary-action,
 .secondary-action {
   display: inline-flex;
@@ -249,6 +284,10 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background: rgba(13, 18, 28, 0.76);
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
 }
 
 .module-card > span {
@@ -261,6 +300,16 @@ button {
   background: rgba(99, 230, 190, 0.12);
   color: #63e6be;
   font-size: 18px;
+}
+
+.module-card:hover {
+  border-color: rgba(99, 230, 190, 0.24);
+  background: rgba(16, 23, 35, 0.86);
+  transform: translateY(-2px);
+}
+
+.module-card:hover > span {
+  background: rgba(99, 230, 190, 0.18);
 }
 
 .module-card h2,
@@ -485,6 +534,10 @@ button {
 }
 
 .wallet-example-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   min-width: 68px;
   min-height: 32px;
   padding: 0 13px;

@@ -22,9 +22,9 @@ import { WalletManager } from './wallet/walletManager';
 const responseFields = ['ok', 'chainId', 'receiver', 'wallet', 'token', 'invoiceAmountUsdt', 'tokenAmount', 'price', 'hash', 'status'];
 
 const routes = [
-  { path: '/about', label: '关于我们' },
-  { path: '/mtpay', label: 'MT支付' },
-  { path: '/wallet-connect', label: '钱包链接' }
+  { path: '/about', label: '关于我们', icon: <SafetyCertificateOutlined /> },
+  { path: '/mtpay', label: 'MT支付', icon: <CreditCardOutlined /> },
+  { path: '/wallet-connect', label: '钱包链接', icon: <WalletOutlined /> }
 ];
 
 const productModules = [
@@ -90,7 +90,8 @@ export function App() {
         <div className="topnav" aria-label="Primary navigation">
           {routes.map((item) => (
             <button className={route === item.path ? 'active' : ''} type="button" key={item.path} onClick={() => navigate(item.path)}>
-              {item.label}
+              <span className="nav-icon">{item.icon}</span>
+              <span>{item.label}</span>
             </button>
           ))}
         </div>
@@ -119,6 +120,20 @@ function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => voi
           <p>
             MTPAY 把钱包连接、USDT/MT 支付、链上确认和标准返回封装成一条可复用的收款路径，让业务系统专注订单本身。
           </p>
+          <div className="hero-signal-row" aria-label="MTPAY service signals">
+            <span>
+              <WalletOutlined />
+              Wallet
+            </span>
+            <span>
+              <ThunderboltOutlined />
+              On-chain
+            </span>
+            <span>
+              <SafetyCertificateOutlined />
+              Confirmed
+            </span>
+          </div>
           <div className="hero-actions">
             <button className="primary-action" type="button" onClick={() => onNavigate('/mtpay')}>
               <CreditCardOutlined />
@@ -288,6 +303,7 @@ function WalletPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect
                 aria-selected={activeExample === 'react'}
                 onClick={() => setActiveExample('react')}
               >
+                <CodeOutlined />
                 React
               </button>
               <button
@@ -297,6 +313,7 @@ function WalletPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect
                 aria-selected={activeExample === 'vue'}
                 onClick={() => setActiveExample('vue')}
               >
+                <ThunderboltOutlined />
                 Vue3
               </button>
             </div>
