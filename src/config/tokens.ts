@@ -4,6 +4,7 @@ import type { TokenConfig, TokenSymbol, WalletKitConfig } from '../core/types';
 import { bsc } from './chains';
 
 const zeroAddress = '0x0000000000000000000000000000000000000000' as Address;
+const defaultPriceProxyUrl = 'https://mtpay.ai/api/mt-price';
 
 export const tokens: Record<TokenSymbol, TokenConfig> = {
   USDT: {
@@ -26,5 +27,5 @@ export const walletKitConfig: WalletKitConfig = {
   chain: bsc,
   tokens,
   receiver: (import.meta.env.VITE_PAYMENT_RECEIVER || zeroAddress) as Address,
-  priceProxyUrl: import.meta.env.VITE_PRICE_PROXY_URL || undefined
+  priceProxyUrl: import.meta.env.VITE_PRICE_PROXY_URL || defaultPriceProxyUrl
 };

@@ -23,7 +23,7 @@ import { WalletManager } from './wallet/walletManager';
 const responseFields = ['ok', 'chainId', 'receiver', 'wallet', 'token', 'invoiceAmountUsdt', 'tokenAmount', 'price', 'hash', 'status'];
 const mtpaySiteWalletKitConfig = {
   ...walletKitConfig,
-  priceProxyUrl: import.meta.env.VITE_PRICE_PROXY_URL || 'https://mtpay.ai/api/mt-price'
+  priceProxyUrl: walletKitConfig.priceProxyUrl
 };
 
 const routes = [
@@ -581,7 +581,7 @@ function UsagePage() {
         <article>
           <h2>3. 环境与 RPC</h2>
           <pre>{`VITE_BSC_RPC_URLS=https://rpc.supermt-quick.com,https://bsc-dataseed.binance.org
-VITE_PRICE_PROXY_URL=/api/mt-price
+VITE_PRICE_PROXY_URL=https://mtpay.ai/api/mt-price
 supermtToken=0x...
 PRICE_API_KEY=...`}</pre>
         </article>
