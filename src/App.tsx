@@ -13,9 +13,10 @@ import { type CSSProperties, useEffect, useMemo, useState } from 'react';
 import bannerImage from '../banner.png';
 import { walletKitConfig } from './config/tokens';
 import { assetUrls } from './core/assets';
-import type { ConnectedWallet } from './core/types';
+import type { ConnectedWallet, WalletProviderInfo } from './core/types';
 import { PaymentSheet } from './ui/PaymentSheet';
 import { WalletModal } from './ui/WalletModal';
+import { detectWallets } from './wallet/adapters';
 import { WalletManager } from './wallet/walletManager';
 
 const responseFields = ['ok', 'chainId', 'receiver', 'wallet', 'token', 'invoiceAmountUsdt', 'tokenAmount', 'price', 'hash', 'status'];
@@ -422,12 +423,17 @@ await provider.request({
 }
 
 function WalletConnectPreview() {
-  const previewWallets = [
-    { name: 'TokenPocket', icon: assetUrls.tokenPocket, status: 'INSTALLED' },
-    { name: 'OKX Wallet', icon: assetUrls.okx, status: 'INSTALLED' },
-    { name: 'MetaMask', icon: assetUrls.metamask, status: 'INSTALLED' },
-    { name: 'Binance Wallet', icon: assetUrls.binance, status: 'APP' }
-  ];
+  const [previewWallets, setPreviewWallets] = useState<WalletProviderInfo[]>([
+    { id: 'tokenpocket', name: 'TokenPocket', icon: assetUrls.tokenPocket, installed: false },
+    { id: 'okx', name: 'OKX Wallet', icon: assetUrls.okx, installed: false },
+    { id: 'metamask', name: 'MetaMask', icon: assetUrls.metamask, installed: false },
+    { id: 'binance', name: 'Binance Wallet', icon: assetUrls.binance, installed: false }
+  ]);
+  const canOpenWalletApp = typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  useEffect(() => {
+    detectWallets().then(setPreviewWallets).catch(() => undefined);
+  }, []);
 
   return (
     <aside className="wallet-preview-pane" aria-label="Wallet modal preview">
@@ -444,7 +450,8 @@ function WalletConnectPreview() {
             <div className="wallet-row" key={preview.name}>
               <img src={preview.icon} alt="" />
               <span>{preview.name}</span>
-              {preview.status === 'APP' ? <em>APP</em> : <strong>INSTALLED</strong>}
+              {preview.installed && <strong>INSTALLED</strong>}
+              {!preview.installed && canOpenWalletApp && preview.mobileDeepLink && <em>APP</em>}
               <ChevronRight size={24} />
             </div>
           ))}

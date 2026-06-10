@@ -43,6 +43,10 @@ export interface WalletModalProps {
   showWalletStatus?: boolean;
 }
 
+function isMobileRuntime() {
+  return typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
 export function WalletModal({
   open,
   manager,
@@ -120,15 +124,19 @@ export function WalletModal({
         </div>
 
         <div className="wallet-list">
-          {wallets.map((wallet) => (
-            <button className="wallet-row" type="button" key={`${wallet.id}-${wallet.rdns || ''}`} onClick={() => connect(wallet)}>
-              <img src={wallet.icon} alt="" />
-              <span>{wallet.name}</span>
-              {showWalletStatus && wallet.installed && <strong>{modalLabels.installed}</strong>}
-              {showWalletStatus && !wallet.installed && wallet.mobileDeepLink && <em>{modalLabels.app}</em>}
-              {connectingId === wallet.id ? <span className="spinner" /> : <ChevronRight size={24} />}
-            </button>
-          ))}
+          {wallets.map((wallet) => {
+            const canOpenApp = isMobileRuntime() && Boolean(wallet.mobileDeepLink);
+
+            return (
+              <button className="wallet-row" type="button" key={`${wallet.id}-${wallet.rdns || ''}`} onClick={() => connect(wallet)}>
+                <img src={wallet.icon} alt="" />
+                <span>{wallet.name}</span>
+                {showWalletStatus && wallet.installed && <strong>{modalLabels.installed}</strong>}
+                {showWalletStatus && !wallet.installed && canOpenApp && <em>{modalLabels.app}</em>}
+                {connectingId === wallet.id ? <span className="spinner" /> : <ChevronRight size={24} />}
+              </button>
+            );
+          })}
         </div>
 
         {error && <p className="modal-error">{error}</p>}
