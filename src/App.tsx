@@ -283,9 +283,6 @@ function WalletPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect
           Wallet Connection
         </span>
         <h1>专业钱包链接服务</h1>
-        <p>
-          业务系统只需要调用连接入口，MTPAY 会识别主流 BSC 钱包、校验链环境，并在连接成功后返回标准钱包对象，供支付、签名和授权流程复用。
-        </p>
 
         <div className="guide-stack wallet-call-guide">
           <article className="wallet-example-card">
