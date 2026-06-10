@@ -1,0 +1,440 @@
+import {
+  ApiOutlined,
+  CheckCircleOutlined,
+  CloudServerOutlined,
+  CodeOutlined,
+  CreditCardOutlined,
+  ExperimentOutlined,
+  SafetyCertificateOutlined,
+  ThunderboltOutlined,
+  WalletOutlined
+} from '@ant-design/icons';
+import { ChevronRight, X } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { walletKitConfig } from './config/tokens';
+import { assetUrls } from './core/assets';
+import type { ConnectedWallet } from './core/types';
+import { PaymentSheet } from './ui/PaymentSheet';
+import { WalletModal } from './ui/WalletModal';
+import { WalletManager } from './wallet/walletManager';
+
+const responseFields = ['ok', 'chainId', 'receiver', 'wallet', 'token', 'invoiceAmountUsdt', 'tokenAmount', 'price', 'hash', 'status'];
+
+const routes = [
+  { path: '/about', label: '关于我们' },
+  { path: '/usage', label: '使用说明' },
+  { path: '/mtpay', label: 'MT支付' },
+  { path: '/wallet-connect', label: '钱包链接' }
+];
+
+const productModules = [
+  {
+    title: '专业钱包连接',
+    text: '统一接入 OKX Wallet、TokenPocket、Binance Wallet、MetaMask，兼容桌面插件、移动端钱包浏览器和 BSC EIP-1193 Provider。',
+    icon: <WalletOutlined />
+  },
+  {
+    title: 'USDT / MT 支付',
+    text: '业务只传入 USDT 标价金额和收款地址，用户可选择 USDT 或按 Ave.ai 实时价格换算后的 MT 支付。',
+    icon: <CreditCardOutlined />
+  },
+  {
+    title: '接入指南与测试',
+    text: '提供前端组件、调用参数、返回 JSON、交易哈希、链上确认和测试流程，便于业务系统快速集成。',
+    icon: <CodeOutlined />
+  },
+  {
+    title: '高速 BSC RPC',
+    text: '内置 https://rpc.supermt-quick.com 作为优先 RPC，并保留公开 BSC 节点 fallback，提高查询和确认稳定性。',
+    icon: <CloudServerOutlined />
+  }
+];
+
+const paymentFlow = [
+  '业务传入 invoiceAmountUsdt 与 receiver',
+  '用户选择 USDT 或 MT',
+  'MT 自动读取 Ave.ai 实时价格并计算数量',
+  '钱包签名 ERC20 transfer',
+  '等待 BSC 链上确认并返回标准 JSON'
+];
+
+function getCurrentRoute() {
+  const path = window.location.pathname;
+  if (path === '/') return '/';
+  return routes.some((route) => route.path === path) ? path : '/';
+}
+
+export function App() {
+  const manager = useMemo(() => new WalletManager(walletKitConfig.chain), []);
+  const [wallet, setWallet] = useState<ConnectedWallet>();
+  const [walletModalOpen, setWalletModalOpen] = useState(false);
+  const [route, setRoute] = useState(getCurrentRoute);
+
+  useEffect(() => {
+    const handlePopstate = () => setRoute(getCurrentRoute());
+    window.addEventListener('popstate', handlePopstate);
+    return () => window.removeEventListener('popstate', handlePopstate);
+  }, []);
+
+  function navigate(path: string) {
+    window.history.pushState(null, '', path);
+    setRoute(path);
+  }
+
+  return (
+    <main className="app-shell">
+      <nav className="topbar">
+        <button className="brand-mark" type="button" onClick={() => navigate('/')} aria-label="Go to MTPAY home">
+          <img src={assetUrls.mtpay} alt="MT Pay" />
+        </button>
+        <div className="topnav" aria-label="Primary navigation">
+          {routes.map((item) => (
+            <button className={route === item.path ? 'active' : ''} type="button" key={item.path} onClick={() => navigate(item.path)}>
+              {item.label}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      {route === '/' && <HomePage onNavigate={navigate} onConnect={() => setWalletModalOpen(true)} />}
+      {route === '/mtpay' && <PaymentPage wallet={wallet} onConnect={() => setWalletModalOpen(true)} />}
+      {route === '/wallet-connect' && <WalletPage wallet={wallet} onConnect={() => setWalletModalOpen(true)} />}
+      {route === '/about' && <AboutPage />}
+      {route === '/usage' && <UsagePage />}
+
+      <footer className="site-footer">© 2026 SuperMT. MTPAY wallet connection, payment, quote and RPC middleware.</footer>
+
+      <WalletModal open={walletModalOpen} manager={manager} onClose={() => setWalletModalOpen(false)} onConnected={setWallet} />
+    </main>
+  );
+}
+
+function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => void; onConnect: () => void }) {
+  return (
+    <>
+      <section className="home-hero">
+        <div className="hero-copy">
+          <span className="eyebrow">MTPAY for BSC Business Systems</span>
+          <h1>钱包连接、USDT/MT 支付、实时价格与高速 RPC 的专业接入平台。</h1>
+          <p>
+            MTPAY 面向 SuperMT 生态和 BSC 业务系统，提供可复用的钱包连接、MT/USDT 支付、Ave.ai 实时报价、链上确认和标准 JSON 返回能力。
+          </p>
+          <div className="hero-actions">
+            <button className="primary-action" type="button" onClick={() => onNavigate('/mtpay')}>
+              <CreditCardOutlined />
+              测试 MT 支付
+            </button>
+            <button className="secondary-action" type="button" onClick={() => onNavigate('/usage')}>
+              <CodeOutlined />
+              查看接入指南
+            </button>
+          </div>
+        </div>
+        <div className="hero-status" aria-label="MTPAY live status">
+          <div>
+            <span>RPC</span>
+            <strong>rpc.supermt-quick.com</strong>
+          </div>
+          <div>
+            <span>Network</span>
+            <strong>BNB Smart Chain</strong>
+          </div>
+          <div>
+            <span>Wallets</span>
+            <strong>OKX / TP / BNB / MetaMask</strong>
+          </div>
+          <button className="wallet-button primary" type="button" onClick={onConnect}>
+            <WalletOutlined />
+            Connect Wallet
+          </button>
+        </div>
+      </section>
+
+      <section className="module-grid" aria-label="MTPAY core modules">
+        {productModules.map((module) => (
+          <article className="module-card" key={module.title}>
+            <span>{module.icon}</span>
+            <h2>{module.title}</h2>
+            <p>{module.text}</p>
+          </article>
+        ))}
+      </section>
+    </>
+  );
+}
+
+function PaymentPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect: () => void }) {
+  return (
+    <>
+      <section className="workspace">
+        <div className="product-panel">
+          <span className="eyebrow">MT / USDT Payment</span>
+          <h1>支付服务只接收金额和收款地址，其余流程由 MTPAY 完成。</h1>
+          <p>
+            业务系统传入 USDT 标价金额和 receiver。用户选择 USDT 时按 1:1 支付，选择 MT 时通过 Ave.ai 实时价格换算，最后向 receiver 发起 BSC ERC20 transfer。
+          </p>
+          <div className="flow-list">
+            {paymentFlow.map((item) => (
+              <span key={item}>
+                <CheckCircleOutlined />
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <PaymentSheet wallet={wallet} onConnect={onConnect} />
+      </section>
+
+      <section className="developer-panel" aria-label="Developer calling instructions">
+        <div>
+          <span className="info-kicker">
+            <ApiOutlined />
+            API
+          </span>
+          <h3>Payment Call</h3>
+        </div>
+        <pre>{`const result = await mtpay.payMtAndConfirm(
+  wallet,
+  '100',              // invoiceAmountUsdt
+  receiverAddress     // BSC receiver
+)`}</pre>
+        <div className="response-fields">
+          {responseFields.map((field) => (
+            <code key={field}>{field}</code>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function WalletPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect: () => void }) {
+  return (
+    <section className="page-panel wallet-connect-panel">
+      <div className="wallet-connect-copy">
+        <span className="info-kicker">
+          <WalletOutlined />
+          Wallet Connection
+        </span>
+        <h1>专业钱包链接服务</h1>
+        <p>
+          业务系统只需要调用连接入口，MTPAY 会识别主流 BSC 钱包、校验链环境，并在连接成功后返回标准钱包对象，供支付、签名和授权流程复用。
+        </p>
+
+        <div className="guide-stack wallet-call-guide">
+          <article>
+            <h2>React 调用</h2>
+            <p>在 React 页面中维护 wallet 和弹框状态，把连接按钮绑定到 WalletModal。</p>
+            <pre>{`import { useMemo, useState } from 'react';
+import { WalletManager, WalletModal, WalletButton } from '@mt/wallet-kit';
+import { walletKitConfig } from './config/tokens';
+
+export function CheckoutWallet() {
+  const manager = useMemo(() => new WalletManager(walletKitConfig.chain), []);
+  const [wallet, setWallet] = useState();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <WalletButton wallet={wallet} onClick={() => setOpen(true)} />
+      <WalletModal
+        open={open}
+        manager={manager}
+        onClose={() => setOpen(false)}
+        onConnected={setWallet}
+      />
+    </>
+  );
+}`}</pre>
+          </article>
+          <article>
+            <h2>Vue3 调用</h2>
+            <p>Vue3 项目可以用同一套 WalletManager，弹框可用封装组件或在业务组件里调用连接方法。</p>
+            <pre>{`<script setup lang="ts">
+import { ref } from 'vue';
+import { WalletManager, detectWallets } from '@mt/wallet-kit';
+import { walletKitConfig } from './config/tokens';
+
+const manager = new WalletManager(walletKitConfig.chain);
+const wallet = ref();
+const wallets = ref([]);
+
+async function openWallets() {
+  wallets.value = await detectWallets();
+}
+
+async function connect(selectedWallet) {
+  wallet.value = await manager.connect(selectedWallet);
+}
+</script>
+
+<template>
+  <button @click="openWallets">
+    {{ wallet?.address || 'Connect Wallet' }}
+  </button>
+  <button
+    v-for="item in wallets"
+    :key="item.id"
+    @click="connect(item)"
+  >
+    {{ item.name }}
+  </button>
+</template>`}</pre>
+          </article>
+          <article>
+            <h2>连接成功后如何使用</h2>
+            <p>返回对象可以直接交给支付、签名、授权等后续业务。模块会在连接阶段校验 BNB Smart Chain。</p>
+            <pre>{`const { address, chainId, wallet, provider } = connected;
+
+await provider.request({
+  method: 'eth_signTypedData_v4',
+  params: [address, typedData]
+});`}</pre>
+            <div className="page-fields">
+              {['address', 'chainId', 'wallet', 'provider'].map((field) => (
+                <code key={field}>{field}</code>
+              ))}
+            </div>
+          </article>
+        </div>
+
+        <button className="wallet-button primary" type="button" onClick={onConnect}>
+          <WalletOutlined />
+          {wallet ? wallet.address : '测试连接钱包'}
+        </button>
+      </div>
+
+      <WalletConnectPreview />
+    </section>
+  );
+}
+
+function WalletConnectPreview() {
+  const previewWallets = [
+    { name: 'TokenPocket', icon: assetUrls.tokenPocket, status: 'INSTALLED' },
+    { name: 'OKX Wallet', icon: assetUrls.okx, status: 'INSTALLED' },
+    { name: 'MetaMask', icon: assetUrls.metamask, status: 'INSTALLED' },
+    { name: 'Binance Wallet', icon: assetUrls.binance, status: 'APP' }
+  ];
+
+  return (
+    <aside className="wallet-preview-pane" aria-label="Wallet modal preview">
+      <div className="wallet-modal wallet-preview-card">
+        <div className="modal-titlebar">
+          <h2>Connect Wallet</h2>
+          <span className="icon-button" aria-hidden="true">
+            <X size={20} />
+          </span>
+        </div>
+
+        <div className="wallet-list">
+          {previewWallets.map((preview) => (
+            <div className="wallet-row" key={preview.name}>
+              <img src={preview.icon} alt="" />
+              <span>{preview.name}</span>
+              {preview.status === 'APP' ? <em>APP</em> : <strong>INSTALLED</strong>}
+              <ChevronRight size={24} />
+            </div>
+          ))}
+        </div>
+
+        <footer className="wallet-footer">
+          <span>UX by</span>
+          <i>.</i>
+          <i>/</i>
+          <b>MTPAY</b>
+        </footer>
+      </div>
+    </aside>
+  );
+}
+
+function AboutPage() {
+  return (
+    <section className="page-panel">
+      <span className="info-kicker">About MTPAY</span>
+      <h1>面向 BSC 业务系统的支付与钱包中间件</h1>
+      <p>
+        MTPAY 的核心定位不是单个 DApp 页面，而是可被多个业务系统调用的基础设施组件。它把钱包连接、支付报价、交易发起、链上确认和结果返回封装成稳定流程。
+      </p>
+      <div className="detail-grid">
+        <article>
+          <h2>业务边界清晰</h2>
+          <p>支付组件只接收 invoice amount 和 receiver，不绑定具体业务订单逻辑，不写死国库地址，不替业务系统决定订单状态。</p>
+        </article>
+        <article>
+          <h2>链上记录完整</h2>
+          <p>每笔支付都通过 ERC20 transfer 上链，返回 hash、blockNumber、status、tokenAmount 和 receiver，业务系统可自行保存和二次核验。</p>
+        </article>
+        <article>
+          <h2>可扩展</h2>
+          <p>当前支持 USDT 和 MT，后续可以扩展更多 token、swap、OTC 与独立收银台模式。</p>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function UsagePage() {
+  return (
+    <section className="page-panel usage-page">
+      <span className="info-kicker">
+        <ExperimentOutlined />
+        Integration Guide
+      </span>
+      <h1>接入指南与测试说明</h1>
+      <p>业务方接入 MTPAY 时，不需要处理钱包列表、Ave.ai 报价、RPC fallback 或交易确认细节。调用方只需要准备金额、收款地址和业务订单号。</p>
+
+      <div className="guide-stack">
+        <article>
+          <h2>1. 支付调用</h2>
+          <pre>{`const result = await mtpay.payMtAndConfirm(
+  wallet,
+  '100',
+  '0xReceiverAddress'
+)`}</pre>
+        </article>
+        <article>
+          <h2>2. 返回 JSON</h2>
+          <pre>{`{
+  ok: true,
+  chainId: 56,
+  receiver: '0x...',
+  wallet: '0x...',
+  token: 'MT',
+  invoiceAmountUsdt: '100',
+  tokenAmount: '1.704...',
+  price: { source: 'Ave.ai', price: '58.68' },
+  hash: '0x...',
+  status: 'confirmed'
+}`}</pre>
+        </article>
+        <article>
+          <h2>3. 环境与 RPC</h2>
+          <pre>{`VITE_BSC_RPC_URLS=https://rpc.supermt-quick.com,https://bsc-dataseed.binance.org
+VITE_PRICE_PROXY_URL=/api/ave/mt-price
+supermtToken=0x...
+aveapiKey=...`}</pre>
+        </article>
+      </div>
+
+      <div className="module-grid compact">
+        <article className="module-card">
+          <span>
+            <ThunderboltOutlined />
+          </span>
+          <h2>RPC 优先级</h2>
+          <p>优先使用 SuperMT Quick RPC，失败后自动切到 BSC dataseed，支付确认和余额查询都使用同一策略。</p>
+        </article>
+        <article className="module-card">
+          <span>
+            <SafetyCertificateOutlined />
+          </span>
+          <h2>测试策略</h2>
+          <p>先测试钱包连接，再测试 MT 报价，最后用小额 USDT/MT 完成链上 transfer，核对 hash 与 receiver。</p>
+        </article>
+      </div>
+    </section>
+  );
+}

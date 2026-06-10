@@ -1,0 +1,71 @@
+{
+  "name": "mtpay-wallet-kit",
+  "version": "0.1.0",
+  "description": "MTPAY wallet connection and payment kit for BSC apps, with React components and Vue3-friendly SDK APIs.",
+  "type": "module",
+  "main": "./dist/package/index.cjs",
+  "module": "./dist/package/index.js",
+  "types": "./dist/package/types/index.d.ts",
+  "style": "./dist/package/style.css",
+  "exports": {
+    ".": {
+      "types": "./dist/package/types/index.d.ts",
+      "import": "./dist/package/index.js",
+      "require": "./dist/package/index.cjs"
+    },
+    "./style.css": "./dist/package/style.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist/package",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "npm run build:lib",
+    "build:app": "tsc && vite build",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json",
+    "preview": "vite preview --host 0.0.0.0",
+    "prepack": "npm run build:lib",
+    "deploy": "bash scripts/deploy.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xgame2026-hash/mtpay-wallet-kit.git"
+  },
+  "keywords": [
+    "mtpay",
+    "wallet",
+    "bsc",
+    "web3",
+    "react",
+    "vue"
+  ],
+  "author": "SuperMT",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xgame2026-hash/mtpay-wallet-kit/issues"
+  },
+  "homepage": "https://github.com/xgame2026-hash/mtpay-wallet-kit#readme",
+  "dependencies": {
+    "@ant-design/icons": "^6.2.5",
+    "antd": "^6.4.3",
+    "lucide-react": "^0.468.0",
+    "viem": "^2.31.0"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0"
+  }
+}

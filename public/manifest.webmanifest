@@ -1,0 +1,21 @@
+{
+  "name": "MTPAY",
+  "short_name": "MTPAY",
+  "icons": [
+    {
+      "src": "/icons/mt-logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/mt-logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#0d1119",
+  "background_color": "#080b12",
+  "display": "standalone"
+}
