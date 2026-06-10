@@ -26,5 +26,5 @@ export const walletKitConfig: WalletKitConfig = {
   chain: bsc,
   tokens,
   receiver: (import.meta.env.VITE_PAYMENT_RECEIVER || zeroAddress) as Address,
-  priceProxyUrl: import.meta.env.VITE_PRICE_PROXY_URL || '/api/mt-price'
+  priceProxyUrl: import.meta.env.VITE_PRICE_PROXY_URL || undefined
 };

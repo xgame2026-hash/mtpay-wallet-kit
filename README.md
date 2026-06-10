@@ -136,9 +136,10 @@ VITE_BSC_RPC_URLS=https://rpc.supermt-quick.com,https://bsc-dataseed.binance.org
 VITE_MT_TOKEN_ADDRESS=0x...
 VITE_USDT_TOKEN_ADDRESS=0x...
 VITE_PRICE_PROXY_URL=/api/mt-price
+VITE_MT_USDT_PRICE=1
 ```
 
-Keep price provider API keys on your backend. Do not expose private API keys through frontend `VITE_` variables.
+`VITE_PRICE_PROXY_URL` is optional. If it is not set, the SDK can use `VITE_MT_USDT_PRICE` for local testing or fall back to `1`. Keep price provider API keys on your backend. Do not expose private API keys through frontend `VITE_` variables.
 
 ## Local Development
 
