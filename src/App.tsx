@@ -10,7 +10,8 @@ import {
   WalletOutlined
 } from '@ant-design/icons';
 import { ChevronRight, X } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { type CSSProperties, useEffect, useMemo, useState } from 'react';
+import bannerImage from '../banner.png';
 import { walletKitConfig } from './config/tokens';
 import { assetUrls } from './core/assets';
 import type { ConnectedWallet } from './core/types';
@@ -111,7 +112,7 @@ export function App() {
 function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => void; onConnect: () => void }) {
   return (
     <>
-      <section className="home-hero">
+      <section className="home-hero" style={{ '--hero-banner': `url(${bannerImage})` } as CSSProperties}>
         <div className="hero-copy">
           <span className="eyebrow">MTPAY for BSC Business Systems</span>
           <h1>让业务收款像一次签名一样清晰。</h1>
@@ -123,25 +124,11 @@ function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => voi
               <CreditCardOutlined />
               测试 MT 支付
             </button>
+            <button className="secondary-action" type="button" onClick={onConnect}>
+              <WalletOutlined />
+              Connect Wallet
+            </button>
           </div>
-        </div>
-        <div className="hero-status" aria-label="MTPAY live status">
-          <div>
-            <span>RPC</span>
-            <strong>rpc.supermt-quick.com</strong>
-          </div>
-          <div>
-            <span>Network</span>
-            <strong>BNB Smart Chain</strong>
-          </div>
-          <div>
-            <span>Wallets</span>
-            <strong>OKX / TP / BNB / MetaMask</strong>
-          </div>
-          <button className="wallet-button primary" type="button" onClick={onConnect}>
-            <WalletOutlined />
-            Connect Wallet
-          </button>
         </div>
       </section>
 
