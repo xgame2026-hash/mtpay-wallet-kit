@@ -469,6 +469,32 @@ button {
   grid-template-columns: 1fr;
 }
 
+.payment-code-panel .snippet-grid {
+  gap: 0;
+}
+
+.payment-code-panel .snippet-card {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.payment-code-panel .snippet-card:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.payment-code-panel .snippet-card header {
+  min-height: 28px;
+  padding: 0 10px;
+  border-bottom: 0;
+  background: transparent;
+}
+
+.payment-code-panel .snippet-card pre {
+  padding: 8px 10px 14px;
+}
+
 .page-panel {
   max-width: 1160px;
   min-height: calc(100vh - 220px);
@@ -821,6 +847,12 @@ button {
   color: #dce2ec;
   font-size: 13px;
   line-height: 1.55;
+}
+
+.payment-code-panel .snippet-card pre {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .payment-code-panel .main-code-block {
