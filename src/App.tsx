@@ -229,10 +229,20 @@ export function CheckoutWallet() {
 
   return (
     <>
-      <WalletButton wallet={wallet} onClick={() => setOpen(true)} />
+      <WalletButton
+        wallet={wallet}
+        onClick={() => setOpen(true)}
+        variant="solid"
+        size="md"
+      />
       <WalletModal
         open={open}
         manager={manager}
+        size="md"
+        variant="default"
+        placement="center"
+        labels={{ title: 'Connect Wallet', footerBrand: 'MTPAY' }}
+        theme={{ accentColor: '#63e6be' }}
         onClose={() => setOpen(false)}
         onConnected={setWallet}
       />

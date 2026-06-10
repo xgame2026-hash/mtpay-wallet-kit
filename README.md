@@ -29,11 +29,55 @@ export function CheckoutWallet() {
   return (
     <>
       <WalletButton wallet={wallet} onClick={() => setOpen(true)} />
-      <WalletModal open={open} manager={manager} onClose={() => setOpen(false)} onConnected={setWallet} />
+      <WalletModal
+        open={open}
+        manager={manager}
+        onClose={() => setOpen(false)}
+        onConnected={setWallet}
+      />
     </>
   );
 }
 ```
+
+## Custom Wallet UI
+
+The React wallet components expose style props so host apps can keep their own visual system while reusing the connection logic.
+
+```tsx
+<WalletButton
+  wallet={wallet}
+  onClick={() => setOpen(true)}
+  label="Connect Wallet"
+  variant="solid"      // default | solid | minimal
+  size="md"            // sm | md | lg
+/>
+
+<WalletModal
+  open={open}
+  manager={manager}
+  onClose={() => setOpen(false)}
+  onConnected={setWallet}
+  variant="compact"    // default | compact | minimal
+  size="md"            // sm | md | lg
+  placement="bottom"   // center | bottom
+  labels={{
+    title: 'Connect Wallet',
+    installed: 'INSTALLED',
+    app: 'APP',
+    footerBrand: 'MTPAY'
+  }}
+  theme={{
+    accentColor: '#63e6be',
+    background: 'rgba(14, 18, 27, 0.96)',
+    borderColor: 'rgba(198, 211, 235, 0.18)'
+  }}
+  className="my-wallet-modal"
+  backdropClassName="my-wallet-backdrop"
+/>
+```
+
+The bundled CSS uses fixed px sizing, `text-size-adjust: 100%`, truncation, responsive grid rows, and `100dvh` max heights to reduce layout distortion on mobile browsers and when users enlarge system text. You can override final details with `className`, `style`, `backdropClassName`, or CSS variables.
 
 ## Vue3 Usage
 
