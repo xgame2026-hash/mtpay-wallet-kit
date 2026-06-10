@@ -162,7 +162,7 @@ export function PaymentSheet({ wallet, onConnect }: PaymentSheetProps) {
         </div>
         <div>
           <span>Price source</span>
-          <strong>{quote?.price?.source || (payToken === 'USDT' ? 'Pegged' : 'Ave.ai')}</strong>
+          <strong>{quote?.price?.source || (payToken === 'USDT' ? 'Pegged' : 'Quote API')}</strong>
         </div>
         <div>
           <span>Receiver</span>

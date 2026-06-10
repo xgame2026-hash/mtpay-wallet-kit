@@ -34,7 +34,7 @@ const productModules = [
   },
   {
     title: 'USDT / MT 支付',
-    text: '业务只传入 USDT 标价金额和收款地址，用户可选择 USDT 或按 Ave.ai 实时价格换算后的 MT 支付。',
+    text: '业务只传入标价金额和收款地址，用户选择 USDT 或 MT，MTPAY 负责生成链上转账并返回确认结果。',
     icon: <CreditCardOutlined />
   },
   {
@@ -52,7 +52,7 @@ const productModules = [
 const paymentFlow = [
   '业务传入 invoiceAmountUsdt 与 receiver',
   '用户选择 USDT 或 MT',
-  'MT 自动读取 Ave.ai 实时价格并计算数量',
+  'MT 通过配置的报价接口计算支付数量',
   '钱包签名 ERC20 transfer',
   '等待 BSC 链上确认并返回标准 JSON'
 ];
@@ -114,9 +114,9 @@ function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => voi
       <section className="home-hero">
         <div className="hero-copy">
           <span className="eyebrow">MTPAY for BSC Business Systems</span>
-          <h1>钱包连接、USDT/MT 支付、实时价格与高速 RPC 的专业接入平台。</h1>
+          <h1>让业务收款像一次签名一样清晰。</h1>
           <p>
-            MTPAY 面向 SuperMT 生态和 BSC 业务系统，提供可复用的钱包连接、MT/USDT 支付、Ave.ai 实时报价、链上确认和标准 JSON 返回能力。
+            MTPAY 把钱包连接、USDT/MT 支付、链上确认和标准返回封装成一条可复用的收款路径，让业务系统专注订单本身。
           </p>
           <div className="hero-actions">
             <button className="primary-action" type="button" onClick={() => onNavigate('/mtpay')}>
@@ -164,9 +164,9 @@ function PaymentPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnec
       <section className="workspace">
         <div className="product-panel">
           <span className="eyebrow">MT / USDT Payment</span>
-          <h1>支付服务只接收金额和收款地址，其余流程由 MTPAY 完成。</h1>
+          <h1>一笔订单，一次签名，收款直达链上。</h1>
           <p>
-            业务系统传入 USDT 标价金额和 receiver。用户选择 USDT 时按 1:1 支付，选择 MT 时通过 Ave.ai 实时价格换算，最后向 receiver 发起 BSC ERC20 transfer。
+            业务系统传入标价金额和 receiver。用户选择 USDT 或 MT 后，MTPAY 完成数量计算、钱包签名、ERC20 转账和确认结果返回。
           </p>
           <div className="flow-list">
             {paymentFlow.map((item) => (
@@ -407,7 +407,7 @@ function UsagePage() {
         Integration Guide
       </span>
       <h1>接入指南与测试说明</h1>
-      <p>业务方接入 MTPAY 时，不需要处理钱包列表、Ave.ai 报价、RPC fallback 或交易确认细节。调用方只需要准备金额、收款地址和业务订单号。</p>
+      <p>业务方接入 MTPAY 时，不需要处理钱包列表、报价接口、RPC fallback 或交易确认细节。调用方只需要准备金额、收款地址和业务订单号。</p>
 
       <div className="guide-stack">
         <article>
@@ -428,7 +428,7 @@ function UsagePage() {
   token: 'MT',
   invoiceAmountUsdt: '100',
   tokenAmount: '1.704...',
-  price: { source: 'Ave.ai', price: '58.68' },
+  price: { source: 'quote-api', price: '58.68' },
   hash: '0x...',
   status: 'confirmed'
 }`}</pre>
@@ -436,9 +436,9 @@ function UsagePage() {
         <article>
           <h2>3. 环境与 RPC</h2>
           <pre>{`VITE_BSC_RPC_URLS=https://rpc.supermt-quick.com,https://bsc-dataseed.binance.org
-VITE_PRICE_PROXY_URL=/api/ave/mt-price
+VITE_PRICE_PROXY_URL=/api/mt-price
 supermtToken=0x...
-aveapiKey=...`}</pre>
+PRICE_API_KEY=...`}</pre>
         </article>
       </div>
 

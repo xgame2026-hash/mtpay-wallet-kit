@@ -24,7 +24,7 @@ if [[ -f "$ROOT_DIR/.env" ]]; then
   {
     echo "HOST=127.0.0.1"
     echo "PORT=$API_PORT"
-    grep -E '^(aveapiKey|AVE_API_KEY|supermtToken|VITE_MT_TOKEN_ADDRESS)=' "$ROOT_DIR/.env" || true
+    grep -E '^(PRICE_API_BASE_URL|PRICE_API_KEY|supermtToken|VITE_MT_TOKEN_ADDRESS)=' "$ROOT_DIR/.env" || true
   } > "$tmp_env"
   scp -q -i "$KEY" -o StrictHostKeyChecking=accept-new "$tmp_env" "$HOST:/tmp/mtpay-api.env"
   rm -f "$tmp_env"
@@ -34,7 +34,7 @@ fi
 "${SSH[@]}" "sudo ln -sfn '$REMOTE_ROOT/releases/$RELEASE' '$REMOTE_ROOT/current'"
 "${SSH[@]}" "sudo tee /etc/systemd/system/mtpay-api.service >/dev/null <<'SERVICE'
 [Unit]
-Description=MTPAY Ave.ai price API
+Description=MTPAY price API
 After=network-online.target
 Wants=network-online.target
 
@@ -68,7 +68,7 @@ http://mtpay.ai, https://mtpay.ai, http://www.mtpay.ai, https://www.mtpay.ai {
 		Referrer-Policy \"no-referrer-when-downgrade\"
 	}
 
-	@api path /api/ave/mt-price /health
+	@api path /api/mt-price /health
 	handle @api {
 		reverse_proxy 127.0.0.1:5174
 	}

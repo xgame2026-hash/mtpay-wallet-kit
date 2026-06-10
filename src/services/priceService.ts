@@ -30,7 +30,7 @@ export class PriceService {
       return {
         pair: 'MT/USDT',
         price: String(data.price),
-        source: data.source === 'Ave.ai' ? 'Ave.ai' : 'proxy',
+        source: data.source ? 'quote-api' : 'proxy',
         updatedAt: data.updatedAt || now,
         ttlSeconds: data.ttlSeconds || 15,
         tokenId: data.tokenId,

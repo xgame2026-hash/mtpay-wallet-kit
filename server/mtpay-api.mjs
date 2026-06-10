@@ -2,8 +2,8 @@ import http from 'node:http';
 
 const host = process.env.HOST || '127.0.0.1';
 const port = Number(process.env.PORT || 5174);
-const apiBaseUrl = process.env.AVE_API_BASE_URL || 'https://prod.ave-api.com';
-const apiKey = process.env.aveapiKey || process.env.AVE_API_KEY;
+const apiBaseUrl = process.env.PRICE_API_BASE_URL;
+const apiKey = process.env.PRICE_API_KEY;
 const mtToken = process.env.supermtToken || process.env.VITE_MT_TOKEN_ADDRESS;
 
 function sendJson(response, status, payload) {
@@ -18,7 +18,8 @@ function sendJson(response, status, payload) {
 }
 
 async function fetchMtPrice() {
-  if (!apiKey) throw new Error('Missing aveapiKey or AVE_API_KEY');
+  if (!apiKey) throw new Error('Missing PRICE_API_KEY');
+  if (!apiBaseUrl) throw new Error('Missing PRICE_API_BASE_URL');
   if (!mtToken) throw new Error('Missing supermtToken or VITE_MT_TOKEN_ADDRESS');
 
   const tokenId = `${mtToken.toLowerCase()}-bsc`;
@@ -38,18 +39,18 @@ async function fetchMtPrice() {
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(`Ave.ai ${response.status}: ${text.slice(0, 180)}`);
+    throw new Error(`Price API ${response.status}: ${text.slice(0, 180)}`);
   }
 
   const payload = await response.json();
   const tokenPrice = payload?.data?.[tokenId] || payload?.data?.[mtToken] || Object.values(payload?.data || {})[0];
   const price = tokenPrice?.current_price_usd;
 
-  if (!price || Number(price) <= 0) throw new Error('Ave.ai returned invalid MT price');
+  if (!price || Number(price) <= 0) throw new Error('Price API returned invalid MT price');
 
   return {
     price,
-    source: 'Ave.ai',
+    source: 'quote-api',
     tokenId,
     updatedAt: Math.floor(Date.now() / 1000),
     ttlSeconds: 15,
@@ -78,7 +79,7 @@ const server = http.createServer(async (request, response) => {
       return;
     }
 
-    if (request.method === 'GET' && url.pathname === '/api/ave/mt-price') {
+    if (request.method === 'GET' && url.pathname === '/api/mt-price') {
       sendJson(response, 200, await fetchMtPrice());
       return;
     }

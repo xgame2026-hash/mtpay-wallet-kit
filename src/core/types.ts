@@ -37,7 +37,7 @@ export interface WalletKitConfig {
 export interface PriceQuote {
   pair: `${TokenSymbol}/${TokenSymbol}`;
   price: string;
-  source: 'Ave.ai' | 'proxy' | 'manual' | 'fallback';
+  source: 'quote-api' | 'proxy' | 'manual' | 'fallback';
   updatedAt: number;
   ttlSeconds: number;
   tokenId?: string;

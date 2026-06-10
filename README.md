@@ -91,10 +91,10 @@ VITE_BSC_CHAIN_ID=56
 VITE_BSC_RPC_URLS=https://rpc.supermt-quick.com,https://bsc-dataseed.binance.org
 VITE_MT_TOKEN_ADDRESS=0x...
 VITE_USDT_TOKEN_ADDRESS=0x...
-VITE_PRICE_PROXY_URL=/api/ave/mt-price
+VITE_PRICE_PROXY_URL=/api/mt-price
 ```
 
-Keep Ave.ai API keys on your backend. Do not expose private API keys through frontend `VITE_` variables.
+Keep price provider API keys on your backend. Do not expose private API keys through frontend `VITE_` variables.
 
 ## Local Development
 
