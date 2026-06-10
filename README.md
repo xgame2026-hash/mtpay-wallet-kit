@@ -139,7 +139,7 @@ VITE_PRICE_PROXY_URL=https://mtpay.ai/api/mt-price
 VITE_MT_USDT_PRICE=1
 ```
 
-`VITE_PRICE_PROXY_URL` is optional. If it is not set, the SDK uses the default MTPAY quote endpoint, `https://mtpay.ai/api/mt-price`. You can override it with your own backend quote endpoint. Keep price provider API keys on your backend. Do not expose private API keys through frontend `VITE_` variables.
+`VITE_PRICE_PROXY_URL` is optional. If it is not set, the SDK uses the default MTPAY quote endpoint, `https://mtpay.ai/api/mt-price`, backed by ave.ai on the MTPAY server. You can override it with your own backend quote endpoint. Keep ave.ai or other price provider API keys on your backend. Do not expose private API keys through frontend `VITE_` variables.
 
 ## Local Development
 

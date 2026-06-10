@@ -11,6 +11,11 @@ interface ProxyPriceResponse {
   volume24h?: number | null;
 }
 
+function normalizePriceSource(source?: string): PriceQuote['source'] {
+  if (source === 'ave.ai' || source === 'quote-api' || source === 'proxy' || source === 'manual' || source === 'fallback') return source;
+  return source ? 'quote-api' : 'proxy';
+}
+
 export class PriceService {
   constructor(private readonly config: WalletKitConfig) {}
 
@@ -30,7 +35,7 @@ export class PriceService {
       return {
         pair: 'MT/USDT',
         price: String(data.price),
-        source: data.source ? 'quote-api' : 'proxy',
+        source: normalizePriceSource(data.source),
         updatedAt: data.updatedAt || now,
         ttlSeconds: data.ttlSeconds || 15,
         tokenId: data.tokenId,

@@ -573,7 +573,7 @@ function UsagePage() {
   token: 'MT',
   invoiceAmountUsdt: '100',
   tokenAmount: '1.704...',
-  price: { source: 'quote-api', price: '58.68' },
+  price: { source: 'ave.ai', price: '58.68' },
   hash: '0x...',
   status: 'confirmed'
 }`}</pre>
@@ -583,7 +583,7 @@ function UsagePage() {
           <pre>{`VITE_BSC_RPC_URLS=https://rpc.supermt-quick.com,https://bsc-dataseed.binance.org
 VITE_PRICE_PROXY_URL=https://mtpay.ai/api/mt-price
 supermtToken=0x...
-PRICE_API_KEY=...`}</pre>
+PRICE_API_KEY=... # ave.ai server key`}</pre>
         </article>
       </div>
 

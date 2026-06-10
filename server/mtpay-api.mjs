@@ -49,7 +49,7 @@ async function fetchMtPrice() {
 
   return {
     price,
-    source: 'quote-api',
+    source: 'ave.ai',
     tokenId,
     updatedAt: Math.floor(Date.now() / 1000),
     ttlSeconds: 15,
