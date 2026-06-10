@@ -209,25 +209,12 @@ function PaymentPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnec
   );
 }
 
-function WalletPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect: () => void }) {
-  return (
-    <section className="page-panel wallet-connect-panel">
-      <div className="wallet-connect-copy">
-        <span className="info-kicker">
-          <WalletOutlined />
-          Wallet Connection
-        </span>
-        <h1>专业钱包链接服务</h1>
-        <p>
-          业务系统只需要调用连接入口，MTPAY 会识别主流 BSC 钱包、校验链环境，并在连接成功后返回标准钱包对象，供支付、签名和授权流程复用。
-        </p>
-
-        <div className="guide-stack wallet-call-guide">
-          <article>
-            <h2>React 调用</h2>
-            <p>在 React 页面中维护 wallet 和弹框状态，把连接按钮绑定到 WalletModal。</p>
-            <pre>{`import { useMemo, useState } from 'react';
-import { WalletManager, WalletModal, WalletButton } from '@mt/wallet-kit';
+const walletExamples = {
+  react: {
+    title: 'React 调用',
+    text: '在 React 页面中维护 wallet 和弹框状态，把连接按钮绑定到 WalletModal。',
+    code: `import { useMemo, useState } from 'react';
+import { WalletManager, WalletModal, WalletButton } from 'mtpay-wallet-kit';
 import { walletKitConfig } from './config/tokens';
 
 export function CheckoutWallet() {
@@ -246,14 +233,14 @@ export function CheckoutWallet() {
       />
     </>
   );
-}`}</pre>
-          </article>
-          <article>
-            <h2>Vue3 调用</h2>
-            <p>Vue3 项目可以用同一套 WalletManager，弹框可用封装组件或在业务组件里调用连接方法。</p>
-            <pre>{`<script setup lang="ts">
+}`
+  },
+  vue: {
+    title: 'Vue3 调用',
+    text: 'Vue3 项目可以用同一套 WalletManager，弹框可用封装组件或在业务组件里调用连接方法。',
+    code: `<script setup lang="ts">
 import { ref } from 'vue';
-import { WalletManager, detectWallets } from '@mt/wallet-kit';
+import { WalletManager, detectWallets } from 'mtpay-wallet-kit';
 import { walletKitConfig } from './config/tokens';
 
 const manager = new WalletManager(walletKitConfig.chain);
@@ -280,7 +267,51 @@ async function connect(selectedWallet) {
   >
     {{ item.name }}
   </button>
-</template>`}</pre>
+</template>`
+  }
+};
+
+function WalletPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect: () => void }) {
+  const [activeExample, setActiveExample] = useState<'react' | 'vue'>('react');
+  const currentExample = walletExamples[activeExample];
+
+  return (
+    <section className="page-panel wallet-connect-panel">
+      <div className="wallet-connect-copy">
+        <span className="info-kicker">
+          <WalletOutlined />
+          Wallet Connection
+        </span>
+        <h1>专业钱包链接服务</h1>
+        <p>
+          业务系统只需要调用连接入口，MTPAY 会识别主流 BSC 钱包、校验链环境，并在连接成功后返回标准钱包对象，供支付、签名和授权流程复用。
+        </p>
+
+        <div className="guide-stack wallet-call-guide">
+          <article className="wallet-example-card">
+            <div className="wallet-example-tabs" role="tablist" aria-label="Wallet kit framework examples">
+              <button
+                className={activeExample === 'react' ? 'active' : ''}
+                type="button"
+                role="tab"
+                aria-selected={activeExample === 'react'}
+                onClick={() => setActiveExample('react')}
+              >
+                React
+              </button>
+              <button
+                className={activeExample === 'vue' ? 'active' : ''}
+                type="button"
+                role="tab"
+                aria-selected={activeExample === 'vue'}
+                onClick={() => setActiveExample('vue')}
+              >
+                Vue3
+              </button>
+            </div>
+            <h2>{currentExample.title}</h2>
+            <p>{currentExample.text}</p>
+            <pre>{currentExample.code}</pre>
           </article>
           <article>
             <h2>连接成功后如何使用</h2>

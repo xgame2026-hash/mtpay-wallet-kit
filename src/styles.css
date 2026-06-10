@@ -489,6 +489,37 @@ button {
   padding: 16px;
 }
 
+.wallet-example-card {
+  display: grid;
+  gap: 12px;
+}
+
+.wallet-example-tabs {
+  display: inline-flex;
+  width: fit-content;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.wallet-example-tabs button {
+  min-width: 68px;
+  min-height: 32px;
+  padding: 0 13px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #9da7b8;
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.wallet-example-tabs button.active {
+  background: rgba(99, 230, 190, 0.16);
+  color: #7bf0cd;
+}
+
 .wallet-call-guide h2 {
   margin: 0 0 8px;
   color: #f7f8fb;
