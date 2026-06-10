@@ -338,11 +338,19 @@ button {
     transform 160ms ease;
 }
 
-.module-card > span {
+.module-card-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  margin-bottom: 14px;
+}
+
+.module-card-title > span {
+  flex: 0 0 auto;
   display: grid;
   width: 34px;
   height: 34px;
-  margin-bottom: 14px;
   place-items: center;
   border-radius: 8px;
   background: rgba(99, 230, 190, 0.12);
@@ -356,17 +364,22 @@ button {
   transform: translateY(-2px);
 }
 
-.module-card:hover > span {
+.module-card:hover .module-card-title > span {
   background: rgba(99, 230, 190, 0.18);
 }
 
-.module-card h2,
+.module-card-title h2,
 .detail-grid h2,
 .guide-stack h2 {
   margin: 0 0 8px;
   color: #f7f8fb;
   font-size: 17px;
   font-weight: 720;
+}
+
+.module-card-title h2 {
+  min-width: 0;
+  margin: 0;
 }
 
 .module-card p,

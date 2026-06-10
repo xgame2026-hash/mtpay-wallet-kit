@@ -169,8 +169,10 @@ function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => voi
       <section className="module-grid" aria-label="MTPAY core modules">
         {productModules.map((module) => (
           <article className="module-card" key={module.title}>
-            <span>{module.icon}</span>
-            <h2>{module.title}</h2>
+            <div className="module-card-title">
+              <span>{module.icon}</span>
+              <h2>{module.title}</h2>
+            </div>
             <p>{module.text}</p>
           </article>
         ))}
