@@ -58,6 +58,31 @@ const paymentFlow = [
   '等待 BSC 链上确认并返回标准 JSON'
 ];
 
+const paymentExample = {
+  title: 'MT 支付调用',
+  text: '按下面步骤接入支付服务，业务只需要传入 wallet、标价金额和 BSC 收款地址。',
+  fileName: 'CheckoutPayment.ts',
+  steps: [
+    { title: 'install', code: 'npm install mtpay-wallet-kit' },
+    { title: 'import', code: `import { PaymentService, walletKitConfig } from 'mtpay-wallet-kit';` },
+    { title: 'create', code: 'const mtpay = new PaymentService(walletKitConfig);' },
+    { title: 'pay', code: `const result = await mtpay.payMtAndConfirm(wallet, '100', receiverAddress);` }
+  ],
+  code: `import { PaymentService, walletKitConfig } from 'mtpay-wallet-kit';
+
+const mtpay = new PaymentService(walletKitConfig);
+
+const result = await mtpay.payMtAndConfirm(
+  wallet,
+  '100',              // invoiceAmountUsdt
+  receiverAddress     // BSC receiver
+);
+
+if (result.ok) {
+  console.log(result.hash, result.status);
+}`
+};
+
 function getCurrentRoute() {
   const path = window.location.pathname;
   if (path === '/') return '/';
@@ -186,19 +211,44 @@ function PaymentPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnec
         <PaymentSheet wallet={wallet} onConnect={onConnect} />
       </section>
 
-      <section className="developer-panel" aria-label="Developer calling instructions">
-        <div>
-          <span className="info-kicker">
-            <ApiOutlined />
-            API
-          </span>
-          <h3>Payment Call</h3>
+      <section className="developer-panel payment-code-panel" aria-label="Developer calling instructions">
+        <div className="code-workbench">
+          <div className="code-window">
+            <div className="code-window-bar">
+              <span className="window-dots" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+              <strong>{paymentExample.fileName}</strong>
+              <em>{paymentExample.title}</em>
+            </div>
+
+            <div className="payment-code-heading">
+              <span className="info-kicker">
+                <ApiOutlined />
+                API
+              </span>
+              <h3>Payment Call</h3>
+              <p>{paymentExample.text}</p>
+            </div>
+
+            <div className="snippet-grid payment-snippet-grid">
+              {paymentExample.steps.map((step, index) => (
+                <section className="snippet-card" key={step.title}>
+                  <header>
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <strong>{step.title}</strong>
+                  </header>
+                  <pre className={index === 0 ? 'terminal-snippet' : ''}>{index === 0 ? `$ ${step.code}` : step.code}</pre>
+                </section>
+              ))}
+            </div>
+
+            <pre className="main-code-block">{paymentExample.code}</pre>
+          </div>
         </div>
-        <pre>{`const result = await mtpay.payMtAndConfirm(
-  wallet,
-  '100',              // invoiceAmountUsdt
-  receiverAddress     // BSC receiver
-)`}</pre>
+
         <div className="response-fields">
           {responseFields.map((field) => (
             <code key={field}>{field}</code>
