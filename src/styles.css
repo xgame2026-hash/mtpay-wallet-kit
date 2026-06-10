@@ -617,6 +617,109 @@ button {
   font-size: 12px;
 }
 
+.about-page {
+  padding: 34px;
+}
+
+.about-hero-copy {
+  max-width: 920px;
+}
+
+.about-hero-copy h1 {
+  max-width: 860px;
+  margin: 0 0 18px;
+  color: #f7f8fb;
+  font-size: 34px;
+  font-weight: 760;
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
+.about-hero-copy p,
+.about-section p {
+  color: #aeb7c6;
+  font-size: 15px;
+  line-height: 1.82;
+}
+
+.about-hero-copy p {
+  max-width: 900px;
+  margin: 0;
+}
+
+.about-section {
+  margin-top: 30px;
+}
+
+.about-section h2 {
+  margin: 0 0 14px;
+  color: #f7f8fb;
+  font-size: 20px;
+  font-weight: 720;
+  line-height: 1.35;
+}
+
+.about-pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.about-pain-grid article,
+.about-capabilities article,
+.about-principles {
+  min-width: 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.about-pain-grid article {
+  padding: 18px;
+}
+
+.about-pain-grid strong {
+  display: block;
+  margin-bottom: 9px;
+  color: #eef2f7;
+  font-size: 16px;
+  font-weight: 720;
+  line-height: 1.35;
+}
+
+.about-pain-grid p,
+.about-capabilities p,
+.about-principles p {
+  margin: 0;
+}
+
+.about-capabilities {
+  display: grid;
+  gap: 14px;
+}
+
+.about-capabilities article {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 16px;
+  padding: 20px;
+}
+
+.about-capabilities article > span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(99, 230, 190, 0.13);
+  color: #63e6be;
+  font-size: 20px;
+}
+
+.about-principles {
+  padding: 20px;
+}
+
 .wallet-connect-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 384px;
@@ -1546,7 +1649,12 @@ button {
 
   .module-grid,
   .module-grid.compact,
-  .detail-grid {
+  .detail-grid,
+  .about-pain-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-capabilities article {
     grid-template-columns: 1fr;
   }
 
@@ -1617,6 +1725,20 @@ button {
 
   .page-panel h1 {
     font-size: 28px;
+  }
+
+  .about-page {
+    padding: 22px;
+  }
+
+  .about-hero-copy h1 {
+    font-size: 26px;
+  }
+
+  .about-hero-copy p,
+  .about-section p {
+    font-size: 14px;
+    line-height: 1.78;
   }
 
   .home-hero {

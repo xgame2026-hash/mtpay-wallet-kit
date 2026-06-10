@@ -463,25 +463,70 @@ function WalletConnectPreview() {
 
 function AboutPage() {
   return (
-    <section className="page-panel">
-      <span className="info-kicker">About MTPAY</span>
-      <h1>面向 BSC 业务系统的支付与钱包中间件</h1>
-      <p>
-        MTPAY 的核心定位不是单个 DApp 页面，而是可被多个业务系统调用的基础设施组件。它把钱包连接、支付报价、交易发起、链上确认和结果返回封装成稳定流程。
-      </p>
-      <div className="detail-grid">
+    <section className="page-panel about-page">
+      <div className="about-hero-copy">
+        <span className="info-kicker">
+          <SafetyCertificateOutlined />
+          About MTPAY
+        </span>
+        <h1>为业务系统准备的钱包连接与链上收款中间件</h1>
+        <p>
+          MTPAY 面向需要接入 BSC 钱包、USDT/MT 收款和链上确认的业务系统。它不是单个页面组件，而是一套可复用的前端 SDK 与支付流程封装，
+          帮助业务方把复杂的钱包识别、网络校验、报价、签名、转账和确认结果，收束为稳定、清晰、可落库的调用链路。
+        </p>
+      </div>
+
+      <div className="about-section">
+        <h2>行业接入的真实痛点</h2>
+        <div className="about-pain-grid">
+          <article>
+            <strong>钱包环境碎片化</strong>
+            <p>桌面插件、移动端钱包浏览器、内置 Provider、deep link 的表现不一致，业务团队常常要为不同钱包重复写兼容逻辑。</p>
+          </article>
+          <article>
+            <strong>支付链路过长</strong>
+            <p>从选择币种、读取报价、检查网络、发起 ERC20 transfer 到等待链上确认，每一步都可能成为业务订单状态的风险点。</p>
+          </article>
+          <article>
+            <strong>返回结果不标准</strong>
+            <p>很多系统只拿到交易哈希，却缺少 tokenAmount、receiver、chainId、status 等字段，后续对账、补单和风控难以统一。</p>
+          </article>
+        </div>
+      </div>
+
+      <div className="about-section about-capabilities">
         <article>
-          <h2>业务边界清晰</h2>
-          <p>支付组件只接收 invoice amount 和 receiver，不绑定具体业务订单逻辑，不写死国库地址，不替业务系统决定订单状态。</p>
+          <span>
+            <WalletOutlined />
+          </span>
+          <div>
+            <h2>钱包连接：统一入口，降低适配成本</h2>
+            <p>
+              MTPAY 统一识别 TokenPocket、OKX Wallet、MetaMask、Binance Wallet 等主流 EIP-1193 Provider，并在连接阶段完成账户读取和
+              BNB Smart Chain 环境校验。业务侧只需要调用连接入口，成功后即可得到 address、chainId、wallet、provider 等标准对象，用于支付、签名和授权流程。
+            </p>
+          </div>
         </article>
         <article>
-          <h2>链上记录完整</h2>
-          <p>每笔支付都通过 ERC20 transfer 上链，返回 hash、blockNumber、status、tokenAmount 和 receiver，业务系统可自行保存和二次核验。</p>
+          <span>
+            <CreditCardOutlined />
+          </span>
+          <div>
+            <h2>MT 支付：订单金额到链上确认的完整闭环</h2>
+            <p>
+              MT 支付只要求业务传入标价金额和 BSC 收款地址。用户选择 USDT 或 MT 后，SDK 负责计算支付数量、调用钱包签名 ERC20 transfer、
+              等待链上确认，并返回 ok、chainId、receiver、wallet、token、tokenAmount、price、hash、status 等字段，方便业务系统保存和二次核验。
+            </p>
+          </div>
         </article>
-        <article>
-          <h2>可扩展</h2>
-          <p>当前支持 USDT 和 MT，后续可以扩展更多 token、swap、OTC 与独立收银台模式。</p>
-        </article>
+      </div>
+
+      <div className="about-section about-principles">
+        <h2>我们的设计原则</h2>
+        <p>
+          MTPAY 保持业务边界清晰：不绑定订单模型，不替业务系统决定订单状态，不写死收款地址。它专注于把链上支付流程做稳定、可配置、可验证，
+          让接入方可以用更少的代码获得更一致的钱包体验和更可靠的链上收款结果。
+        </p>
       </div>
     </section>
   );
