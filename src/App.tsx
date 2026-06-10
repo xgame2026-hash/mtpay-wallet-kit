@@ -11,6 +11,7 @@ import {
 import { ChevronRight, X } from 'lucide-react';
 import { type CSSProperties, useEffect, useMemo, useState } from 'react';
 import bannerImage from '../banner.png';
+import mtpayLogo from '../mtpay.png';
 import { walletKitConfig } from './config/tokens';
 import { assetUrls } from './core/assets';
 import type { ConnectedWallet, WalletProviderInfo } from './core/types';
@@ -102,7 +103,7 @@ export function App() {
     <main className="app-shell">
       <nav className="topbar">
         <button className="brand-mark" type="button" onClick={() => navigate('/')} aria-label="Go to MTPAY home">
-          <img src={assetUrls.mtpay} alt="MT Pay" />
+          <img src={mtpayLogo} alt="MT Pay" />
         </button>
         <div className="topnav" aria-label="Primary navigation">
           {routes.map((item) => (

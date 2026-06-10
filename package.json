@@ -52,8 +52,6 @@
   },
   "homepage": "https://github.com/xgame2026-hash/mtpay-wallet-kit#readme",
   "dependencies": {
-    "@ant-design/icons": "^6.2.5",
-    "antd": "^6.4.3",
     "lucide-react": "^0.468.0",
     "viem": "^2.31.0"
   },
@@ -62,9 +60,11 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@ant-design/icons": "^6.2.5",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^5.0.0",
+    "antd": "^6.4.3",
     "typescript": "^5.8.3",
     "vite": "^7.0.0"
   }

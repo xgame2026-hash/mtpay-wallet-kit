@@ -4,7 +4,5 @@ export const assetUrls = {
   tokenPocket: new URL('../../TP_Logo.svg', import.meta.url).href,
   binance: new URL('../../BNB.svg', import.meta.url).href,
   usdt: new URL('../../usdt.svg', import.meta.url).href,
-  swap: new URL('../../swap.svg', import.meta.url).href,
-  mt: new URL('../../MT_logo_256.png', import.meta.url).href,
-  mtpay: new URL('../../mtpay.png', import.meta.url).href
+  mt: new URL('../../MT_logo_256.png', import.meta.url).href
 };

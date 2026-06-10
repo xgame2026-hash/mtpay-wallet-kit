@@ -16,7 +16,8 @@ export default defineConfig({
       fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs')
     },
     rollupOptions: {
-      external: ['@ant-design/icons', 'antd', 'lucide-react', 'react', 'react-dom', 'react/jsx-runtime', 'viem'],
+      external: (id) =>
+        ['@ant-design/icons', 'antd', 'lucide-react', 'react', 'react-dom', 'react/jsx-runtime', 'viem'].some((dependency) => id === dependency || id.startsWith(`${dependency}/`)),
       output: {
         globals: {
           '@ant-design/icons': 'icons',

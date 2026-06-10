@@ -7,5 +7,5 @@
     "noEmit": false,
     "outDir": "dist/package/types"
   },
-  "include": ["src/index.ts", "src/**/*.ts", "src/**/*.tsx"]
+  "include": ["src/vite-env.d.ts", "src/index.ts"]
 }
