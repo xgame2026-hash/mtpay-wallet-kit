@@ -207,9 +207,16 @@ function PaymentPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnec
 const walletExamples = {
   react: {
     title: 'React 调用',
-    text: '在 React 页面中维护 wallet 和弹框状态，把连接按钮绑定到 WalletModal。',
+    text: '按下面三步接入，业务页面就能直接弹出 MTPAY 钱包选择框。',
+    steps: [
+      { title: '安装', code: 'npm install mtpay-wallet-kit' },
+      { title: '导入组件和样式', code: `import { WalletManager, WalletModal, WalletButton } from 'mtpay-wallet-kit';
+import 'mtpay-wallet-kit/style.css';` },
+      { title: '渲染连接按钮和弹框', code: 'WalletButton 负责打开弹框，WalletModal 连接成功后返回 wallet。' }
+    ],
     code: `import { useMemo, useState } from 'react';
 import { WalletManager, WalletModal, WalletButton } from 'mtpay-wallet-kit';
+import 'mtpay-wallet-kit/style.css';
 import { walletKitConfig } from './config/tokens';
 
 export function CheckoutWallet() {
@@ -232,7 +239,12 @@ export function CheckoutWallet() {
   },
   vue: {
     title: 'Vue3 调用',
-    text: 'Vue3 项目可以用同一套 WalletManager，弹框可用封装组件或在业务组件里调用连接方法。',
+    text: 'Vue3 项目使用 SDK API 连接钱包，可自行渲染钱包列表或封装成业务弹框。',
+    steps: [
+      { title: '安装', code: 'npm install mtpay-wallet-kit' },
+      { title: '导入 SDK API', code: `import { WalletManager, detectWallets } from 'mtpay-wallet-kit';` },
+      { title: '发现钱包并连接', code: 'detectWallets() 返回可用钱包列表，manager.connect(wallet) 返回连接结果。' }
+    ],
     code: `<script setup lang="ts">
 import { ref } from 'vue';
 import { WalletManager, detectWallets } from 'mtpay-wallet-kit';
@@ -303,6 +315,14 @@ function WalletPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect
             </div>
             <h2>{currentExample.title}</h2>
             <p>{currentExample.text}</p>
+            <ol className="wallet-example-steps">
+              {currentExample.steps.map((step) => (
+                <li key={step.title}>
+                  <span>{step.title}</span>
+                  <code>{step.code}</code>
+                </li>
+              ))}
+            </ol>
             <pre>{currentExample.code}</pre>
           </article>
           <article>

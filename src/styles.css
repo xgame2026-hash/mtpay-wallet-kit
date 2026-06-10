@@ -520,6 +520,56 @@ button {
   color: #7bf0cd;
 }
 
+.wallet-example-steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: wallet-step;
+}
+
+.wallet-example-steps li {
+  display: grid;
+  grid-template-columns: 22px minmax(88px, auto) minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.wallet-example-steps li::before {
+  counter-increment: wallet-step;
+  content: counter(wallet-step);
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(99, 230, 190, 0.14);
+  color: #7bf0cd;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.wallet-example-steps span {
+  color: #eef2f7;
+  font-size: 13px;
+  font-weight: 620;
+}
+
+.wallet-example-steps code {
+  min-width: 0;
+  padding: 7px 9px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+  background: #090d15;
+  color: #dce2ec;
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre;
+}
+
 .wallet-call-guide h2 {
   margin: 0 0 8px;
   color: #f7f8fb;
