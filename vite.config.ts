@@ -6,8 +6,8 @@ function mtPriceProxy(): Plugin {
     name: 'mt-price-proxy',
     configureServer(server) {
       const env = loadEnv(server.config.mode, process.cwd(), '');
-      const apiBaseUrl = env.PRICE_API_BASE_URL;
-      const apiKey = env.PRICE_API_KEY;
+      const apiBaseUrl = env.PRICE_API_BASE_URL || 'https://prod.ave-api.com';
+      const apiKey = env.PRICE_API_KEY || env.aveapiKey;
       const mtToken = env.VITE_MT_TOKEN_ADDRESS || env.supermtToken;
 
       const handleMtPrice = async (_request: Parameters<typeof server.middlewares.use>[1] extends (request: infer T, ...args: never[]) => unknown ? T : never, response: Parameters<typeof server.middlewares.use>[1] extends (request: never, response: infer T, ...args: never[]) => unknown ? T : never) => {
@@ -15,7 +15,6 @@ function mtPriceProxy(): Plugin {
 
         try {
           if (!apiKey) throw new Error('Missing PRICE_API_KEY in .env');
-          if (!apiBaseUrl) throw new Error('Missing PRICE_API_BASE_URL in .env');
           if (!mtToken) throw new Error('Missing supermtToken or VITE_MT_TOKEN_ADDRESS in .env');
 
           const tokenId = `${mtToken.toLowerCase()}-bsc`;

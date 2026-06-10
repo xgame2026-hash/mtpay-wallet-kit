@@ -2,8 +2,8 @@ import http from 'node:http';
 
 const host = process.env.HOST || '127.0.0.1';
 const port = Number(process.env.PORT || 5174);
-const apiBaseUrl = process.env.PRICE_API_BASE_URL;
-const apiKey = process.env.PRICE_API_KEY;
+const apiBaseUrl = process.env.PRICE_API_BASE_URL || 'https://prod.ave-api.com';
+const apiKey = process.env.PRICE_API_KEY || process.env.aveapiKey;
 const mtToken = process.env.supermtToken || process.env.VITE_MT_TOKEN_ADDRESS;
 
 function sendJson(response, status, payload) {
@@ -19,7 +19,6 @@ function sendJson(response, status, payload) {
 
 async function fetchMtPrice() {
   if (!apiKey) throw new Error('Missing PRICE_API_KEY');
-  if (!apiBaseUrl) throw new Error('Missing PRICE_API_BASE_URL');
   if (!mtToken) throw new Error('Missing supermtToken or VITE_MT_TOKEN_ADDRESS');
 
   const tokenId = `${mtToken.toLowerCase()}-bsc`;

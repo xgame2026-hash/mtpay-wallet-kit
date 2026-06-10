@@ -1,6 +1,5 @@
 import {
   ApiOutlined,
-  CheckCircleOutlined,
   CloudServerOutlined,
   CodeOutlined,
   CreditCardOutlined,
@@ -48,14 +47,6 @@ const productModules = [
     text: '内置 https://rpc.supermt-quick.com 作为优先 RPC，并保留公开 BSC 节点 fallback，提高查询和确认稳定性。',
     icon: <CloudServerOutlined />
   }
-];
-
-const paymentFlow = [
-  '业务传入 invoiceAmountUsdt 与 receiver',
-  '用户选择 USDT 或 MT',
-  'MT 通过配置的报价接口计算支付数量',
-  '钱包签名 ERC20 transfer',
-  '等待 BSC 链上确认并返回标准 JSON'
 ];
 
 const paymentExample = {
@@ -190,72 +181,59 @@ function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => voi
 
 function PaymentPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnect: () => void }) {
   return (
-    <>
-      <section className="workspace">
-        <div className="product-panel">
-          <span className="eyebrow">MT / USDT Payment</span>
-          <h1>一笔订单，一次签名，收款直达链上。</h1>
-          <p>
-            业务系统传入标价金额和 receiver。用户选择 USDT 或 MT 后，MTPAY 完成数量计算、钱包签名、ERC20 转账和确认结果返回。
-          </p>
-          <div className="flow-list">
-            {paymentFlow.map((item) => (
-              <span key={item}>
-                <CheckCircleOutlined />
-                {item}
-              </span>
+    <section className="workspace payment-workspace">
+      <PaymentCodePanel />
+      <PaymentSheet wallet={wallet} onConnect={onConnect} />
+    </section>
+  );
+}
+
+function PaymentCodePanel() {
+  return (
+    <section className="developer-panel payment-code-panel" aria-label="Developer calling instructions">
+      <div className="code-workbench">
+        <div className="code-window">
+          <div className="code-window-bar">
+            <span className="window-dots" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+            </span>
+            <strong>{paymentExample.fileName}</strong>
+            <em>{paymentExample.title}</em>
+          </div>
+
+          <div className="payment-code-heading">
+            <span className="info-kicker">
+              <ApiOutlined />
+              API
+            </span>
+            <h3>Payment Call</h3>
+            <p>{paymentExample.text}</p>
+          </div>
+
+          <div className="snippet-grid payment-snippet-grid">
+            {paymentExample.steps.map((step, index) => (
+              <section className="snippet-card" key={step.title}>
+                <header>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <strong>{step.title}</strong>
+                </header>
+                <pre className={index === 0 ? 'terminal-snippet' : ''}>{index === 0 ? `$ ${step.code}` : step.code}</pre>
+              </section>
             ))}
           </div>
+
+          <pre className="main-code-block">{paymentExample.code}</pre>
         </div>
+      </div>
 
-        <PaymentSheet wallet={wallet} onConnect={onConnect} />
-      </section>
-
-      <section className="developer-panel payment-code-panel" aria-label="Developer calling instructions">
-        <div className="code-workbench">
-          <div className="code-window">
-            <div className="code-window-bar">
-              <span className="window-dots" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
-              <strong>{paymentExample.fileName}</strong>
-              <em>{paymentExample.title}</em>
-            </div>
-
-            <div className="payment-code-heading">
-              <span className="info-kicker">
-                <ApiOutlined />
-                API
-              </span>
-              <h3>Payment Call</h3>
-              <p>{paymentExample.text}</p>
-            </div>
-
-            <div className="snippet-grid payment-snippet-grid">
-              {paymentExample.steps.map((step, index) => (
-                <section className="snippet-card" key={step.title}>
-                  <header>
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <strong>{step.title}</strong>
-                  </header>
-                  <pre className={index === 0 ? 'terminal-snippet' : ''}>{index === 0 ? `$ ${step.code}` : step.code}</pre>
-                </section>
-              ))}
-            </div>
-
-            <pre className="main-code-block">{paymentExample.code}</pre>
-          </div>
-        </div>
-
-        <div className="response-fields">
-          {responseFields.map((field) => (
-            <code key={field}>{field}</code>
-          ))}
-        </div>
-      </section>
-    </>
+      <div className="response-fields">
+        {responseFields.map((field) => (
+          <code key={field}>{field}</code>
+        ))}
+      </div>
+    </section>
   );
 }
 

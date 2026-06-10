@@ -190,6 +190,11 @@ button {
   margin: 0 auto;
 }
 
+.payment-workspace {
+  grid-template-columns: minmax(0, 1fr) 430px;
+  align-items: start;
+}
+
 .home-hero {
   position: relative;
   max-width: 1160px;
@@ -436,6 +441,9 @@ button {
 
 .payment-code-panel {
   display: block;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
   padding: 0;
   overflow: hidden;
   background: rgba(5, 8, 15, 0.68);
@@ -458,7 +466,7 @@ button {
 }
 
 .payment-snippet-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .page-panel {
