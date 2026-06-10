@@ -13,7 +13,7 @@ SSH=(ssh -i "$KEY" -o StrictHostKeyChecking=accept-new "$HOST")
 RSYNC_SSH="ssh -i $KEY -o StrictHostKeyChecking=accept-new"
 
 cd "$ROOT_DIR"
-npm run build
+npm run build:app
 
 "${SSH[@]}" "sudo install -d -o ubuntu -g ubuntu '$REMOTE_ROOT/releases/$RELEASE' '$API_DIR'"
 rsync -az --delete -e "$RSYNC_SSH" "$ROOT_DIR/dist/" "$HOST:$REMOTE_ROOT/releases/$RELEASE/"
@@ -24,7 +24,7 @@ if [[ -f "$ROOT_DIR/.env" ]]; then
   {
     echo "HOST=127.0.0.1"
     echo "PORT=$API_PORT"
-    grep -E '^(PRICE_API_BASE_URL|PRICE_API_KEY|supermtToken|VITE_MT_TOKEN_ADDRESS)=' "$ROOT_DIR/.env" || true
+    grep -E '^(PRICE_API_BASE_URL|PRICE_API_KEY|aveapiKey|supermtToken|VITE_MT_TOKEN_ADDRESS)=' "$ROOT_DIR/.env" || true
   } > "$tmp_env"
   scp -q -i "$KEY" -o StrictHostKeyChecking=accept-new "$tmp_env" "$HOST:/tmp/mtpay-api.env"
   rm -f "$tmp_env"
