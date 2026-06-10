@@ -84,6 +84,8 @@ http://mtpay.ai, https://mtpay.ai, http://www.mtpay.ai, https://www.mtpay.ai {
 }
 # END MTPAY
 CADDY
+else
+	sudo sed -i 's#@api path /api/ave/mt-price /health#@api path /api/mt-price /api/ave/mt-price /health#' /etc/caddy/Caddyfile
 fi
 sudo caddy validate --config /etc/caddy/Caddyfile
 sudo systemctl reload caddy"
