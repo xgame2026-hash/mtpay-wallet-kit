@@ -44,7 +44,7 @@ const productModules = [
   },
   {
     title: '高速 BSC RPC',
-    text: '内置 https://rpc.supermt-quick.com 作为优先 RPC，并保留公开 BSC 节点 fallback，提高查询和确认稳定性。',
+    text: '内置高速 RPC，并保留公开 BSC 节点 fallback，提高查询和确认稳定性。',
     icon: <CloudServerOutlined />
   }
 ];
