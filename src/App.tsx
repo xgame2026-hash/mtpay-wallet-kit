@@ -22,7 +22,6 @@ const responseFields = ['ok', 'chainId', 'receiver', 'wallet', 'token', 'invoice
 
 const routes = [
   { path: '/about', label: '关于我们' },
-  { path: '/usage', label: '使用说明' },
   { path: '/mtpay', label: 'MT支付' },
   { path: '/wallet-connect', label: '钱包链接' }
 ];
@@ -123,10 +122,6 @@ function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => voi
             <button className="primary-action" type="button" onClick={() => onNavigate('/mtpay')}>
               <CreditCardOutlined />
               测试 MT 支付
-            </button>
-            <button className="secondary-action" type="button" onClick={() => onNavigate('/usage')}>
-              <CodeOutlined />
-              查看接入指南
             </button>
           </div>
         </div>
