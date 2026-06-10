@@ -21,6 +21,10 @@ import { detectWallets } from './wallet/adapters';
 import { WalletManager } from './wallet/walletManager';
 
 const responseFields = ['ok', 'chainId', 'receiver', 'wallet', 'token', 'invoiceAmountUsdt', 'tokenAmount', 'price', 'hash', 'status'];
+const mtpaySiteWalletKitConfig = {
+  ...walletKitConfig,
+  priceProxyUrl: import.meta.env.VITE_PRICE_PROXY_URL || 'https://mtpay.ai/api/mt-price'
+};
 
 const routes = [
   { path: '/about', label: '关于我们', icon: <SafetyCertificateOutlined /> },
@@ -187,7 +191,7 @@ function PaymentPage({ wallet, onConnect }: { wallet?: ConnectedWallet; onConnec
   return (
     <section className="workspace payment-workspace">
       <PaymentCodePanel />
-      <PaymentSheet wallet={wallet} onConnect={onConnect} />
+      <PaymentSheet wallet={wallet} onConnect={onConnect} config={mtpaySiteWalletKitConfig} />
     </section>
   );
 }

@@ -3,16 +3,16 @@ import { useMemo, useState } from 'react';
 import { isAddress, type Address } from 'viem';
 import { walletKitConfig } from '../config/tokens';
 import { shortAddress } from '../core/format';
-import type { ConnectedWallet, PaymentQuote, PaymentRecord, TokenSymbol, TransactionStatus } from '../core/types';
+import type { ConnectedWallet, PaymentQuote, PaymentRecord, TokenSymbol, TransactionStatus, WalletKitConfig } from '../core/types';
 import { PaymentRecordService } from '../services/paymentRecordService';
 import { PaymentService } from '../services/paymentService';
 
-interface PaymentSheetProps {
+export interface PaymentSheetProps {
   wallet?: ConnectedWallet;
   onConnect: () => void;
+  config?: WalletKitConfig;
 }
 
-const service = new PaymentService(walletKitConfig);
 const recordService = new PaymentRecordService();
 
 const statusText: Record<TransactionStatus, string> = {
@@ -27,7 +27,9 @@ const statusText: Record<TransactionStatus, string> = {
   failed: 'Payment failed'
 };
 
-export function PaymentSheet({ wallet, onConnect }: PaymentSheetProps) {
+export function PaymentSheet({ wallet, onConnect, config }: PaymentSheetProps) {
+  const activeConfig = config ?? walletKitConfig;
+  const service = useMemo(() => new PaymentService(activeConfig), [activeConfig]);
   const [amountUsdt, setAmountUsdt] = useState('20');
   const [receiver, setReceiver] = useState('');
   const [payToken, setPayToken] = useState<TokenSymbol>('USDT');
@@ -37,7 +39,7 @@ export function PaymentSheet({ wallet, onConnect }: PaymentSheetProps) {
   const [error, setError] = useState('');
   const [records, setRecords] = useState<PaymentRecord[]>(() => recordService.list());
 
-  const token = walletKitConfig.tokens[payToken];
+  const token = activeConfig.tokens[payToken];
   const normalizedReceiver = receiver.trim();
   const canSubmit = useMemo(() => Number(amountUsdt) > 0, [amountUsdt]);
 
@@ -77,7 +79,7 @@ export function PaymentSheet({ wallet, onConnect }: PaymentSheetProps) {
           wallet: wallet.address,
           receiver: receiverAddress,
           token: payToken,
-          tokenAddress: walletKitConfig.tokens[payToken].address,
+          tokenAddress: activeConfig.tokens[payToken].address,
           amount: result.quote.tokenAmount,
           invoiceAmountUsdt: result.quote.invoiceAmountUsdt,
           quote: result.quote,
@@ -137,7 +139,7 @@ export function PaymentSheet({ wallet, onConnect }: PaymentSheetProps) {
       <div className="token-tabs" role="tablist" aria-label="Payment token">
         {service.getPaymentTokenOptions().map((symbol) => (
           <button className={payToken === symbol ? 'active' : ''} type="button" key={symbol} onClick={() => chooseToken(symbol)}>
-            <img src={walletKitConfig.tokens[symbol].icon} alt="" />
+            <img src={activeConfig.tokens[symbol].icon} alt="" />
             <span>{symbol}</span>
           </button>
         ))}
@@ -170,7 +172,7 @@ export function PaymentSheet({ wallet, onConnect }: PaymentSheetProps) {
         </div>
         <div>
           <span>Network</span>
-          <strong>{walletKitConfig.chain.name}</strong>
+          <strong>{activeConfig.chain.name}</strong>
         </div>
         {wallet && (
           <div>
@@ -181,7 +183,7 @@ export function PaymentSheet({ wallet, onConnect }: PaymentSheetProps) {
       </div>
 
       {hash && (
-        <a className="tx-link" href={`${walletKitConfig.chain.blockExplorers?.default.url}/tx/${hash}`} target="_blank" rel="noreferrer">
+        <a className="tx-link" href={`${activeConfig.chain.blockExplorers?.default.url}/tx/${hash}`} target="_blank" rel="noreferrer">
           <ReceiptText size={16} />
           <span>{shortAddress(hash)}</span>
         </a>
@@ -195,7 +197,7 @@ export function PaymentSheet({ wallet, onConnect }: PaymentSheetProps) {
           {records.slice(0, 3).map((record) => (
             <a
               className="record-row"
-              href={`${walletKitConfig.chain.blockExplorers?.default.url}/tx/${record.hash}`}
+              href={`${activeConfig.chain.blockExplorers?.default.url}/tx/${record.hash}`}
               target="_blank"
               rel="noreferrer"
               key={record.hash}
