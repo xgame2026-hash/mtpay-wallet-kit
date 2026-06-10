@@ -113,13 +113,16 @@ export function App() {
 function HomePage({ onNavigate, onConnect }: { onNavigate: (path: string) => void; onConnect: () => void }) {
   return (
     <>
-      <section className="home-hero" style={{ '--hero-banner': `url(${bannerImage})` } as CSSProperties}>
+      <section className="home-hero" style={{ '--hero-banner': `url(${bannerImage})` } as CSSProperties} aria-label="MTPAY banner" />
+
+      <section className="home-intro">
         <div className="hero-copy">
           <span className="eyebrow">MTPAY for BSC Business Systems</span>
           <h1>让业务收款像一次签名一样清晰。</h1>
-          <p>
-            MTPAY 把钱包连接、USDT/MT 支付、链上确认和标准返回封装成一条可复用的收款路径，让业务系统专注订单本身。
-          </p>
+          <p>MTPAY 把钱包连接、USDT/MT 支付、链上确认和标准返回封装成一条可复用的收款路径，让业务系统专注订单本身。</p>
+        </div>
+
+        <div className="hero-action-panel">
           <div className="hero-signal-row" aria-label="MTPAY service signals">
             <span>
               <WalletOutlined />

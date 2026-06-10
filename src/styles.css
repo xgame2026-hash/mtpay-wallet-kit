@@ -181,7 +181,6 @@ button {
   color: #dce2ec;
 }
 
-.home-hero,
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 430px;
@@ -193,19 +192,30 @@ button {
 
 .home-hero {
   position: relative;
-  display: flex;
-  align-items: center;
-  min-height: min(560px, calc(100vh - 190px));
+  max-width: 1160px;
+  aspect-ratio: 3042 / 1291;
+  min-height: 0;
+  margin: 0 auto;
   overflow: hidden;
-  padding: 48px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  background-image:
-    linear-gradient(90deg, rgba(5, 8, 15, 0.9) 0%, rgba(5, 8, 15, 0.72) 32%, rgba(5, 8, 15, 0.22) 62%, rgba(5, 8, 15, 0.12) 100%),
-    var(--hero-banner);
+  background-image: var(--hero-banner);
   background-position: center;
   background-size: cover;
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38);
+}
+
+.home-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: end;
+  max-width: 1160px;
+  margin: 18px auto 0;
+  padding: 22px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(10, 14, 22, 0.72);
 }
 
 .hero-copy {
@@ -240,14 +250,15 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 26px;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 
 .hero-signal-row {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 20px;
+  justify-content: flex-end;
 }
 
 .hero-signal-row span {
@@ -1407,8 +1418,19 @@ button {
   }
 
   .home-hero {
-    min-height: 0;
-    padding: 34px;
+    aspect-ratio: 16 / 9;
+    background-position: center;
+  }
+
+  .home-intro {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .hero-actions,
+  .hero-signal-row {
+    justify-content: flex-start;
   }
 
   .developer-panel {
@@ -1496,9 +1518,12 @@ button {
   }
 
   .home-hero {
-    min-height: 460px;
-    padding: 24px;
+    aspect-ratio: 4 / 3;
     background-position: 58% center;
+  }
+
+  .home-intro {
+    padding: 18px;
   }
 
   .payment-sheet,
